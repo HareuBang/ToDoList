@@ -1,0 +1,33 @@
+<% if(edit.length !== 0) {%>
+  <form action="/home/edit/<%= edit[0].id %>?_method=PATCH" method="post">
+<%} else {%> 
+  <form action="/home" method="post">
+<% } %>
+  <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label fw-bold">Title</label>
+    <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="To Do List 프로젝트 제작하기" value="<% if(edit.length !== 0) {%><%=edit[0].title%><%}%>" required>
+  </div>
+  <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label fw-bold">Memo</label>
+    <textarea class="form-control" id="exampleFormControlTextarea1" name="memo" rows="3"><% if(edit.length !== 0) {%><%=edit[0].memo%><%}%></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="inputDate" class="form-label fw-bold">Deadline</label>
+    <input type="date" class="form-control" id="inputDate" name="date" value="<%= edit.length !== 0 ? edit[0].date : '' %>" required>
+  </div>
+  <div class="mb-3">
+    <label for="options-base" class="form-label fw-bold">Priority</label> <br/>
+
+    <input type="radio" class="btn-check" name="priority" id="option5" value="important" autocomplete="off" <% if (edit.length !== 0 && edit[0].priority === 'important') { %> checked <% } %>>
+    <label class="btn btn-outline-danger" for="option5">중요</label>
+  
+    <input type="radio" class="btn-check" name="priority" id="option6" value="average" autocomplete="off"  <% if (edit.length !== 0 && edit[0].priority === 'average') { %> checked <% } %>>
+    <label class="btn btn-outline-warning" for="option6">보통</label>
+  
+    <input type="radio" class="btn-check" name="priority" id="option8" value="unimportant" autocomplete="off"  <% if (edit.length !== 0 && edit[0].priority === 'unimportant') { %> checked <% } %> required>
+    <label class="btn btn-outline-primary" for="option8">중요하지 않음</label>
+  
+    <button type="submit" class="btn btn-outline-success" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: 3rem; --bs-btn-font-size: 1.5rem; margin-top: 3rem; margin-left: 2.5rem;"><% if (edit.length !== 0) { %> Edit <% } else { %> Add <% } %> </button>
+    <% edit.length = 0; %>
+  </div>
+</form>

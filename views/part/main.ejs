@@ -1,0 +1,134 @@
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="display: flex; justify-content: space-between">
+  <div class="btn-group me-2" role="group" aria-label="First group" style="margin-top: 0.7rem;">
+    <button type="button" class="btn btn-success" id="showAll">ALL</button>
+    <button type="button" class="btn btn-danger" id="showImportant">important</button>
+    <button type="button" class="btn btn-warning" id="showAverage">average</button>
+    <button type="button" class="btn btn-primary" id="showUnimportant">unimportant</button>
+  </div>
+  <div class="btn-group" role="group" aria-label="Basic outlined example" style="margin-top: 0.7rem;">
+    <button type="button" class="btn btn-outline-primary" id="sortNewset">최신순</button>
+    <button type="button" class="btn btn-outline-primary" id="sortPriority">중요도순</button>
+    <button type="button" class="btn btn-outline-primary" id="sortDuedate">마감기한순</button>
+  </div>
+</div>
+
+<!-- 일정 목록 -->
+<div class="row" id="todoList">
+
+  <% if (toDo.length !== 0) { %>
+    <% for (let [idx, doItem] of toDo.entries()) { %>
+      <% let borderColor = doItem.priority === "important" ? "border-danger" : doItem.priority === "average" ? "border-warning" : "border-primary" %>
+      <div class="col-6 todo-item" data-priority="<%=doItem.priority%>" data-date="<%= doItem.date %>" style="display: block;">
+        <ol class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-start border border-4 <%=borderColor%>" style="margin-top:.5rem;" id="group<%=idx%>">
+            <button id="done<%=idx%>" class="btn material-symbols-outlined clickBtn" style="margin-top: 5px;">
+              check
+            </button>
+            <div class="ms-2 me-auto">
+              <div class="fw-bold"><%= doItem.title %></div>
+              <%= doItem.memo %>
+            </div>
+            <span style="line-height: 50px; margin-right: .3rem;">
+              <%= doItem.now.getFullYear() %>- 
+              <%= doItem.now.getMonth()+1 %>-
+              <%= doItem.now.getDate() %>
+              ~
+              <%= doItem.date %>
+            </span>
+            <form method="POST" action="/home/<%= doItem.id %>?_method=PATCH">
+              <button type="submit" class="btn btn-link material-symbols-outlined" id="editBtn<%=idx%>">
+                edit
+              </button>
+            </form>
+            <form method="POST" action="/home/<%= doItem.id %>?_method=DELETE" >
+              <button type="submit" class="btn btn-link material-symbols-outlined">
+              delete
+            </button>
+          </form> 
+          </li>
+        </ol>
+      </div>
+    <% } %>
+  <% } %>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const allButton = document.getElementById('showAll');
+    const importantButton = document.getElementById('showImportant');
+    const averageButton = document.getElementById('showAverage');
+    const unimportantButton = document.getElementById('showUnimportant');
+
+    const sortNewestButton = document.getElementById('sortNewset');
+    const sortPriorityButton = document.getElementById('sortPriority');
+    const sortDueDateButton = document.getElementById('sortDuedate');
+
+    const todoItems = Array.from(document.querySelectorAll('.todo-item'));
+
+    function filterTodos(priority) {
+      todoItems.forEach(item => {
+        if (priority === 'all' || item.dataset.priority === priority) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function sortTodos(sortBy) {
+      const sortedItems = [...todoItems].sort((a, b) => {
+        const getDate = (item) => new Date(item.dataset.date);
+        const getPriorityValue = (item) => {
+          switch (item.dataset.priority) {
+            case 'important': return 1;
+            case 'average': return 2;
+            case 'unimportant': return 3;
+            default: return 4;
+          }
+        };
+
+        if (sortBy === 'newest') {
+          return getDate(b) - getDate(a);
+        } else if (sortBy === 'priority') {
+          return getPriorityValue(a) - getPriorityValue(b);
+        } else if (sortBy === 'duedate') {
+          return getDate(a) - getDate(b);
+        }
+      });
+
+      sortedItems.forEach(item => item.parentNode.appendChild(item));
+    }
+
+    allButton.addEventListener('click', () => filterTodos('all'));
+    importantButton.addEventListener('click', () => filterTodos('important'));
+    averageButton.addEventListener('click', () => filterTodos('average'));
+    unimportantButton.addEventListener('click', () => filterTodos('unimportant'));
+
+    sortNewestButton.addEventListener('click', () => {
+      sortTodos('newest');
+    });
+
+    sortPriorityButton.addEventListener('click', () => {
+      sortTodos('priority');
+    });
+
+    sortDueDateButton.addEventListener('click', () => {
+      sortTodos('duedate');
+    });
+
+    document.querySelectorAll(".clickBtn").forEach((btn, idx) => {
+      btn[idx] = false;
+      btn.addEventListener('click', () => {
+        btn[idx] = !btn[idx];
+        if (btn[idx]) {
+          btn.style.color = 'red';
+          document.querySelector(`#group${idx}`).style.backgroundColor = "rgba(191, 191, 191, .7)";
+          document.querySelector(`#editBtn${idx}`).disabled = true;
+        } else {
+          btn.style.color = '';
+          document.querySelector(`#group${idx}`).style.backgroundColor = '';
+          document.querySelector(`#editBtn${idx}`).disabled = false;
+        }
+      });
+    });
+  });
+</script>
