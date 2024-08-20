@@ -6,7 +6,6 @@
 
 HTML, CSS, JS, Express, EJS, Git
 
-==============================================================================================================
 1. localhost:3000/home - 메인페이지
 ![main_2](https://github.com/user-attachments/assets/39d8b110-1a37-4795-b52e-07dd6b27baf8)
 2. input.ejs (Add 추가)
