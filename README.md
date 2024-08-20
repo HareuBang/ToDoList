@@ -1,5 +1,5 @@
 1. localhost:3000/home - 메인페이지
-![main](https://github.com/user-attachments/assets/70324583-b9b6-4844-b3e1-0bac5dbfc215)
+![main_2](https://github.com/user-attachments/assets/39d8b110-1a37-4795-b52e-07dd6b27baf8)
 2. input.ejs (Add 추가)
 ![input](https://github.com/user-attachments/assets/62a2207e-905c-44c0-93c4-694d08d2d626)
 3. 추가된 toDo 목록
@@ -18,4 +18,5 @@ ex) 2024-08-20 ~ 2024-08-22 => 일정생성날짜 ~ 마감기한
 8. 완료된 일정 _(해당 일정에 check 표시 클릭)
 ![main_todo_check](https://github.com/user-attachments/assets/94ed3972-a88b-4ef1-9059-97163a827048)
 9. 삭제 _(해당 일정에 쓰레기통 아이콘 클릭 시)
-![main](https://github.com/user-attachments/assets/70324583-b9b6-4844-b3e1-0bac5dbfc215)
+![main_2](https://github.com/user-attachments/assets/9d9f31c3-9e28-44f4-b2bd-514e5378c575)
+
